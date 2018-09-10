@@ -4,8 +4,6 @@ var httpReq = require('request');
 
 var client_id = process.env.INST_KEY;
 var client_secret = process.env.INST_SECRET;
-console.log(client_id);
-console.log(client_secret);
 
 /* GET Instagram insights. */
 router.get('/', function(req, res, next){
