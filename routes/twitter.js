@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var httpReq = require('request');
 var qs = require('querystring');
+var amqp = require('amqplib/callback_api');
 var consumer_key = process.env.TW_KEY;
 var consumer_secret_key = process.env.TW_SECRET;
 
@@ -172,6 +173,17 @@ async function getUserInfo(oauthFinal, args, res, redirect_uri){
 	}
 	else{
 		res.render('twitter', {user, week, followerRatio, avgFv, avgRt, percentFv, percentRt});
+		amqp.connect('amqp://localhost', function(err, conn){
+				conn.createChannel(function(err, ch){
+					var q = 'coda';
+					var d = new Date();
+					var s = d.toString();
+					var msg = 'Connessione a Twitter Insights - ' + s;
+					ch.assertQueue(q, {durable: false});
+					ch.sendToQueue(q, Buffer.from(msg));
+				});
+				setTimeout(function(){ conn.close()}, 500);
+		});
 	}
 }
 

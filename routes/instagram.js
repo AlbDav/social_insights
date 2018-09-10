@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var httpReq = require('request');
+var amqp = require('amqplib/callback_api');
 
 var client_id = process.env.INST_KEY;
 var client_secret = process.env.INST_SECRET;
@@ -143,6 +144,18 @@ async function getUserInfo(access_token, res, redirect_uri){
 	}
 	else{
 		res.render('instagram', {user, week, followerRatio, avgLikes, avgComments, percentLikes, percentComments});
+		amqp.connect('amqp://localhost', function(err, conn){
+                                conn.createChannel(function(err, ch){
+                                        var q = 'coda';
+                                        var d = new Date();
+                                        var s = d.toString();
+                                        var msg = 'Connessione a Instagram Insights - ' + s;
+                                        ch.assertQueue(q, {durable: false});
+                                        ch.sendToQueue(q, Buffer.from(msg));
+                                });
+                                setTimeout(function(){ conn.close()}, 500);
+                });
+
 	}
 }
 

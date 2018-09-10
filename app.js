@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var session = require('client-sessions');
 var logger = require('morgan');
 var sassMiddleware = require('node-sass-middleware');
+var amqp = require('amqplib/callback_api');
+var fs = require('fs');
 
 var indexRouter = require('./routes/index');
 var instaRouter = require('./routes/instagram');
@@ -52,6 +54,19 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+amqp.connect('amqp://localhost', function(err, conn){
+		conn.createChannel(function(err, ch){
+			var q = 'coda';
+			ch.assertQueue(q, {durable: false});
+			ch.consume(q, function(msg){
+				fs.appendFile('log.txt', msg.content.toString() + '\n', function(err){
+					if(err) throw err;
+					console.log("Log file saved");
+				});
+			}, {noAck: true});
+		});
 });
 
 module.exports = app;
