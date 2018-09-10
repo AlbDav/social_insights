@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Instagram insights</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="/javascripts/instaload.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<link rel=stylesheet href="/stylesheets/pages.css" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<script>
+			function changeChart(){
+				var el = document.getElementById("day").value;
+				$(".container").css('display','none');
+				$("#cont" + el).css('display','block');
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Ciao <%= user.data.full_name %>, questi sono i dati insights del tuo account instagram</h1>
+		<div id="first_line">
+			<div id="follower_ratio">
+				<p>Il rapporto follower/following è <%= followerRatio %></p>
+			</div>
+			<div id="avg">
+				<p>La tua media di like è <%= avgLikes %></p>
+				<p>La tua media di commenti è <%= avgComments %></p>
+			</div>
+			<div id="percent">
+				<p>In media, il <%= percentLikes %>% dei tuoi follower mette like ai tuoi post</p>
+				<p>In media, il <%= percentComments %>% dei tuoi follower commenta i tuoi post</p>
+				<p>  </p>
+			</div>
+		</div>
+		<div id="second_line_cont">
+			<div id="second_line">
+			<p>Queste sono le statistche basate sugli orari di pubblicazione</p>
+			<div>Giorno mostrato:
+				<select name="day" id="day" onChange="changeChart()">
+					<option value="Mon">Mon</option>
+					<option value="Tue">Tue</option>
+					<option value="Wed">Wed</option>
+					<option value="Thu">Thu</option>
+					<option value="Fri">Fri</option>
+					<option value="Sat">Sat</option>
+					<option value="Sun">Sun</option>
+				</select>
+			</div>
+			<div id="contMon" class="container">
+				<canvas id="Mon"></canvas>
+			</div>
+			<div id="contTue" class="container">
+				<canvas id="Tue"></canvas>
+			</div>
+			<div id="contWed" class="container">
+				<canvas id="Wed"></canvas>
+			</div>
+			<div id="contThu" class="container">
+				<canvas id="Thu"></canvas>
+			</div>
+			<div id="contFri" class="container">
+				<canvas id="Fri"></canvas>
+			</div>
+			<div id="contSat" class="container">
+				<canvas id="Sat"></canvas>
+			</div>
+			<div id="contSun" class="container">
+				<canvas id="Sun"></canvas>
+			</div>
+			<script>
+				load(<%- JSON.stringify(week) %>, "instagram");
+			</script>
+			</div>
+		</div>
+	</body>
+</html>

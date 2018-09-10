@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Social insights</title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<script>
+			function redirect(uri){
+				location.href = uri;
+			}
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<h1>Benvenuto!</h1>
+			<p>Seleziona il social network di cui vuoi conoscere i dati insights</p>
+		</div>
+		<div id="cont">
+			<div id="insta" onClick="redirect('<%- instagram_uri %>')">
+				<img src="/images/insta.png">
+				<p>Instagram</p>
+			</div>
+			<div id="twitter" onClick="redirect('<%- twitter_uri %>')">
+				<img src="/images/twitter.png">
+				<p>Twitter</p>
+			</div>
+		</div>
+	</body>
+</html>
