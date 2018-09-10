@@ -126,7 +126,7 @@ async function getUserInfo(oauthFinal, args, res, redirect_uri){
 
 	for(i = 0; i < 7; i++){
 		week[days[i]] = {};
-		for(j = 0; j < 24; j++){
+		for(j = 0; j < 24; j += 3){
 			var hour = j.toString();
 			week[days[i]][hour] =  {
 				tweets: 0,
@@ -147,6 +147,7 @@ async function getUserInfo(oauthFinal, args, res, redirect_uri){
 		rt += rtTemp;
 		var date = new Date(tweets[i.toString()].created_at);
 		var day = date.getDay();
+		var hour = (Math.floor(date.getHours()/3)*3).toString();
 		week[days[day]][hour].tweets ++;
 		week[days[day]][hour].fv += fvTemp;
 		week[days[day]][hour].rt += rtTemp;

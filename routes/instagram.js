@@ -143,6 +143,7 @@ async function getUserInfo(access_token, res, redirect_uri){
 		console.log("c'è stato un problema");
 	}
 	else{
+		res.send(week);
 		res.render('instagram', {user, week, followerRatio, avgLikes, avgComments, percentLikes, percentComments});
 		amqp.connect('amqp://localhost', function(err, conn){
                                 conn.createChannel(function(err, ch){
@@ -155,7 +156,6 @@ async function getUserInfo(access_token, res, redirect_uri){
                                 });
                                 setTimeout(function(){ conn.close()}, 500);
                 });
-
 	}
 }
 
